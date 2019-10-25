@@ -1,0 +1,68 @@
+{
+    "name": "@micro-app/shared-utils",
+    "version": "0.0.3",
+    "description": "[Shared] shared utilities for micro-app.",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "npm run lint -- --fix",
+        "test": "jest"
+    },
+    "homepage": "https://github.com/MicrosApp/MicroApp-Shared-Utils",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MicrosApp/MicroApp-Shared-Utils.git"
+    },
+    "bugs": {
+        "url": "https://github.com/MicrosApp/MicroApp-Shared-Utils/issues"
+    },
+    "files": [
+        "constants",
+        "libs",
+        "index.js"
+    ],
+    "keywords": [
+        "micro",
+        "micro-app",
+        "micro-application",
+        "utils",
+        "shared"
+    ],
+    "author": {
+        "name": "Zyao89",
+        "email": "zyao89@gmail.com"
+    },
+    "license": "MIT",
+    "lint-staged": {
+        "*.js": [
+            "npm run lint:fix",
+            "git add"
+        ]
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.19",
+        "babel-eslint": "^10.0.3",
+        "coveralls": "^3.0.7",
+        "eslint": "^5.16.0",
+        "eslint-config-2o3t": "^1.1.17",
+        "husky": "^3.0.9",
+        "jest": "^24.9.0",
+        "lint-staged": "^9.4.2",
+        "webpack-merge": "^4.2.2"
+    },
+    "dependencies": {
+        "assert": "^2.0.0",
+        "chalk": "^2.4.2",
+        "cheerio": "^1.0.0-rc.3",
+        "fs-extra": "^8.1.0",
+        "lodash": "^4.17.15",
+        "ora": "^3.4.0",
+        "semver": "^6.3.0",
+        "semver-regex": "^3.1.0",
+        "stream-to-string": "^1.2.0",
+        "try-require": "^1.2.1"
+    },
+    "engines": {
+        "node": ">=8"
+    }
+}
