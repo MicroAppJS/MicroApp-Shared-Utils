@@ -4,6 +4,12 @@ const tryRequire = require('try-require');
 const fs = require('fs-extra');
 const path = require('path');
 
+function isSupport(filename) {
+    return [ '.js', '.json' ].some(ext => {
+        return filename.endsWith(ext);
+    });
+}
+
 function load(root, filename) {
     const filePath = path.resolve(root, filename);
     if (!fs.existsSync(filePath)) {
@@ -17,6 +23,9 @@ function load(root, filename) {
 
 function loadFile(root, filename, { before, after } = {}) {
     if (!root || !filename) {
+        return null;
+    }
+    if (!isSupport(filename)) {
         return null;
     }
     if (before && !before(root, filename)) {

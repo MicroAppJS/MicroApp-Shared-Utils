@@ -58,6 +58,13 @@ module.exports = {
     success() {
         return getStdoutMethod('log')(toString.success.call(toString, ...arguments));
     },
+
+    /**
+     * spinner
+     *
+     * @param {string} message msg
+     * @return {ora} ora
+     */
     spinner(message) {
         const defulatOpts = {
             text: message,
