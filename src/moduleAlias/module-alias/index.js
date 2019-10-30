@@ -1,5 +1,6 @@
 'use strict';
 
+const os = require('os');
 const BuiltinModule = require('module');
 
 // Guard against poorly mocked module constructors
@@ -172,8 +173,8 @@ function init(options) {
     }
 
     if (typeof npmPackage !== 'object') {
-        const pathString = candidatePackagePaths.join(',\n');
-        throw new Error('Unable to find package.json in any of:\n[' + pathString + ']');
+        const pathString = candidatePackagePaths.join(`,${os.EOL}`);
+        throw new Error(`Unable to find package.json in any of:${os.EOL}[` + pathString + ']');
     }
 
     //

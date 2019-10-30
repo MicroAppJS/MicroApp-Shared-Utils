@@ -1,8 +1,9 @@
 'use strict';
 
-const chalk = require('chalk').default;
+const chalk = require('chalk');
 const utils = require('util');
 const ora = require('ora');
+const os = require('os');
 
 const getStdoutMethod = function(type) {
     if (!process) {
@@ -20,30 +21,30 @@ const getStdoutMethod = function(type) {
 const toString = {
     debug() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgMagenta(' DEBUG ')} ${message} \r\n`;
+        return `${chalk.bgMagenta(' DEBUG ')} ${message} ${os.EOL}`;
     },
     warn() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgYellowBright.black(' WARN ')} ${chalk.yellowBright(message)} \r\n`;
+        return `${chalk.bgYellowBright.black(' WARN ')} ${chalk.yellowBright(message)} ${os.EOL}`;
     },
     error() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgRed(' ERROR ')} ${chalk.redBright(message)} \r\n`;
+        return `${chalk.bgRed(' ERROR ')} ${chalk.redBright(message)} ${os.EOL}`;
     },
     info() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgBlue(' INFO ')} ${chalk.blueBright(message)} \r\n`;
+        return `${chalk.bgBlue(' INFO ')} ${chalk.blueBright(message)} ${os.EOL}`;
     },
     success() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${chalk.greenBright(message)} \r\n`;
+        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${chalk.greenBright(message)} ${os.EOL}`;
     },
 };
 
 module.exports = {
     toString,
     debug() {
-        if (!process.env.MICRO_DEBUG_LOGGER) return; // 是否开启
+        if (!process.env.MICRO_APP_DEBUG_LOGGER) return; // 是否开启
         return getStdoutMethod('log')(toString.debug.call(toString, ...arguments));
     },
     warn() {
@@ -79,12 +80,12 @@ module.exports = {
             const error = e;
             this.error(...Array.prototype.splice.call(arguments, 1));
             const stack = error.stack.split(/\r?\n/mg);
-            getStdoutMethod('error')(chalk.grey(stack.slice(1).join('\r\n')) + '\r\n');
+            getStdoutMethod('error')(chalk.grey(stack.slice(1).join(os.EOL)) + os.EOL);
         } else {
             const error = new Error();
             this.error(...arguments);
             const stack = error.stack.split(/\r?\n/mg);
-            getStdoutMethod('error')(chalk.grey(stack.slice(2).join('\r\n')) + '\r\n');
+            getStdoutMethod('error')(chalk.grey(stack.slice(2).join(os.EOL)) + os.EOL);
         }
         process.exit(1);
     },

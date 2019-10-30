@@ -36,9 +36,9 @@ describe('virtualFile', () => {
     });
 
     it('require function', () => {
-        const file = path.resolve(__dirname, '../libs/logger.js');
+        const file = require.resolve('../src/logger.js');
         virtualFile.register(file, content => {
-            return content.replace('const { NAME } = CONSTANTS;', 'const NAME = "CCTV"');
+            return content.replace('INFO', 'CCTV');
         });
 
         const logger = virtualFile.require(file);

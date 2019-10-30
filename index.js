@@ -10,7 +10,7 @@
     'virtualFile',
 ].forEach(m => {
     Object.assign(exports, {
-        [m]: require(`./libs/${m}`),
+        [m]: require(`./src/${m}`),
     });
 });
 

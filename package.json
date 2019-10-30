@@ -17,8 +17,7 @@
         "url": "https://github.com/MicrosApp/MicroApp-Shared-Utils/issues"
     },
     "files": [
-        "constants",
-        "libs",
+        "src",
         "index.js"
     ],
     "keywords": [
