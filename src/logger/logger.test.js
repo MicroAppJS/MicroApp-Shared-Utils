@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { logger } = require('../');
+const { logger } = require('../..');
 
 describe('Logger', () => {
 
@@ -43,6 +43,13 @@ describe('Logger', () => {
         setTimeout(() => {
             spinner.success('cc');
         }, 3000);
+
+    });
+
+    it('logger npmlog', () => {
+
+        const npmlog = require('npmlog');
+        npmlog.info('abcddd');
 
     });
 

@@ -8,13 +8,13 @@
         "lint:fix": "npm run lint -- --fix",
         "test": "jest"
     },
-    "homepage": "https://github.com/MicrosApp/MicroApp-Shared-Utils",
+    "homepage": "https://github.com/MicroAppJS/MicroApp-Shared-Utils",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MicrosApp/MicroApp-Shared-Utils.git"
+        "url": "git+https://github.com/MicroAppJS/MicroApp-Shared-Utils.git"
     },
     "bugs": {
-        "url": "https://github.com/MicrosApp/MicroApp-Shared-Utils/issues"
+        "url": "https://github.com/MicroAppJS/MicroApp-Shared-Utils/issues"
     },
     "files": [
         "src",
@@ -55,6 +55,7 @@
         "cheerio": "^1.0.0-rc.3",
         "fs-extra": "^8.1.0",
         "lodash": "^4.17.15",
+        "npmlog": "^4.1.2",
         "ora": "^3.4.0",
         "semver": "^6.3.0",
         "semver-regex": "^3.1.0",

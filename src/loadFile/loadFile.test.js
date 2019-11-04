@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { loadFile } = require('../');
+const { loadFile } = require('../..');
 
 describe('loadFile', () => {
 
@@ -25,7 +25,7 @@ describe('loadFile', () => {
     });
 
     it('success', () => {
-        const file = loadFile(__dirname, 'a.js');
+        const file = loadFile(__dirname, '../../test/a.js');
 
         expect(file).not.toBeNull();
     });
