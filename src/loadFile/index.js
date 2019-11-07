@@ -1,12 +1,27 @@
 'use strict';
 
-const tryRequire = require('try-require');
 const fs = require('fs-extra');
 const path = require('path');
 
+const loaders = require('./loaders');
+const logger = require('../logger');
+
+const DEFAULT_LOADERS = Object.freeze({
+    '.js': loaders.loadJs,
+    '.json': loaders.loadJson,
+    '.yaml': loaders.loadYaml,
+    '.yml': loaders.loadYaml,
+    // noExt: loaders.loadYaml,
+});
+
+function loaderExt(filename) {
+    return path.extname(filename) || 'noExt';
+}
+
 function isSupport(filename) {
-    return [ '.js', '.json' ].some(ext => {
-        return filename.endsWith(ext);
+    const _ext = loaderExt(filename);
+    return Object.keys(DEFAULT_LOADERS).some(ext => {
+        return ext === _ext;
     });
 }
 
@@ -18,7 +33,16 @@ function load(root, filename) {
     if (!fs.statSync(filePath).isFile()) {
         return null;
     }
-    return tryRequire(filePath);
+    const loaderKey = loaderExt(filename);
+    const loader = DEFAULT_LOADERS[loaderKey];
+    if (!loader) {
+        logger.throw(`No loader specified for extension "${loaderKey}", so "${filename}" is invalid`);
+    }
+    try {
+        return loader(filePath);
+    } catch (err) {
+        logger.throw(err);
+    }
 }
 
 function loadFile(root, filename, { before, after } = {}) {
@@ -26,6 +50,7 @@ function loadFile(root, filename, { before, after } = {}) {
         return null;
     }
     if (!isSupport(filename)) {
+        logger.warn(`Not Support extension, so "${filename}" is invalid`);
         return null;
     }
     if (before && !before(root, filename)) {

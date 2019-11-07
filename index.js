@@ -1,6 +1,6 @@
 'use strict';
 
-[
+const internal = [
     'moduleAlias',
     'getPadLength',
     'injectHtml',
@@ -8,18 +8,37 @@
     'logger',
     'smartMerge',
     'virtualFile',
-].forEach(m => {
-    Object.assign(exports, {
-        [m]: require(`./src/${m}`),
+].reduce((obj, key) => {
+    obj[key] = require(`./src/${key}`);
+    return obj;
+}, {});
+
+internal.assert = internal.logger.assert.bind(internal.logger);
+
+const thirdParty = {
+    fs: 'fs-extra',
+    chalk: 'chalk',
+    cheerio: 'cheerio',
+    semver: 'semver',
+    semverRegex: 'semver-regex',
+    _: 'lodash',
+    tryRequire: 'try-require',
+    ora: 'ora',
+    dedent: 'dedent',
+    globby: 'globby',
+    globParent: 'glob-parent',
+    isGlob: 'is-glob',
+    npa: 'npm-package-arg',
+    parseGitUrl: 'git-url-parse',
+};
+
+Object.keys(thirdParty).forEach(key => {
+    // lazy
+    Object.defineProperty(internal, key, {
+        get() {
+            return require(thirdParty[key]);
+        },
     });
 });
 
-exports.assert = require('assert');
-exports.fs = require('fs-extra');
-exports.chalk = require('chalk');
-exports.cheerio = require('cheerio');
-exports.semver = require('semver');
-exports.semverRegex = require('semver-regex');
-exports._ = require('lodash');
-exports.tryRequire = require('try-require');
-exports.ora = require('ora');
+module.exports = internal;

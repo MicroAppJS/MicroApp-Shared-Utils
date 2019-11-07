@@ -1,7 +1,7 @@
 'use strict';
 
 const npmlog = require('npmlog');
-
+const assert = require('assert');
 const chalk = require('chalk');
 const utils = require('util');
 const ora = require('ora');
@@ -14,21 +14,15 @@ if (process.env.MICRO_APP_LOGGER_LEVEL) {
 }
 // npmlog.prefixStyle = {};
 const CUSTOM_LEVEL = {
-    debug: {
-        disp: '*DEBUG*',
-        bg: 'magenta',
-    },
-    info: {
-        fg: 'brightGreen',
-    },
     success: {
+        level: 3001,
         fg: 'brightWhite',
         bg: 'green',
         bold: true,
     },
     noise: {
-        fg: 'blue',
         level: 10000,
+        bg: 'magenta',
         beep: true,
     },
 };
@@ -55,6 +49,9 @@ const getStdoutMethod = function(type) {
 };
 
 const getNpmlogMethod = function(type) {
+    if ([ 'debug' ].includes(type)) {
+        type = 'verbose';
+    }
     return npmlog[type].bind(npmlog);
 };
 
@@ -98,7 +95,7 @@ const getMethod = function(type) {
 const logger = {
     toString,
     debug() {
-        if (!process.env.MICRO_APP_DEBUG_LOGGER) return; // 是否开启
+        // if (!process.env.MICRO_APP_DEBUG_LOGGER) return; // 是否开启
         return getMethod('debug')(...arguments);
     },
     warn() {
@@ -142,6 +139,14 @@ const logger = {
             getStdoutMethod('error')(chalk.grey(stack.slice(2).join(os.EOL)) + os.EOL);
         }
         process.exit(1);
+    },
+
+    assert(...args) {
+        try {
+            assert(...args);
+        } catch (err) {
+            this.throw('[assert]', err.message);
+        }
     },
 };
 module.exports = new Proxy(logger, {

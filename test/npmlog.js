@@ -1,6 +1,6 @@
 'use strict';
 
-const npmlog = require('../src/logger');
+const logger = require('../src/logger');
 
 // npmlog.prefixStyle = {
 
@@ -12,15 +12,18 @@ const npmlog = require('../src/logger');
 //     bg: 'red',
 // };
 
-npmlog.info('abc', 'haha..');
-npmlog.error('abc', 'haha..');
-npmlog.warn('abc', 'haha..');
-npmlog.warn('', 'haha..');
-npmlog.success('haha..');
-npmlog.debug('111haha..');
-npmlog.noise(false, 'haha..');
+logger.npmlog.level = 'verbose';
 
-npmlog.throw(new Error('abbdd'), 'abc..');
+logger.info('abc', 'haha..');
+logger.error('abc', 'haha..');
+logger.warn('abc', 'haha..');
+logger.warn('', 'haha..');
+logger.success('haha..');
+logger.debug('111haha..');
+logger.noise(false, 'haha..');
+
+// logger.throw(new Error('abbdd'), 'abc..');
 
 // console.log(npmlog.record)
 // console.log(npmlog.level)
+logger.assert(1 === 2, 'not eq!!');

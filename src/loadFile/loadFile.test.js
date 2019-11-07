@@ -13,19 +13,31 @@ describe('loadFile', () => {
     });
 
     it('not exist', () => {
-        const file = loadFile(__dirname, 'abc.jsx');
+        const file = loadFile(process.cwd(), 'abc.jsx');
 
         expect(file).toBeNull();
     });
 
     it('not file', () => {
-        const file = loadFile(__dirname, '../');
+        const file = loadFile(process.cwd(), './');
 
         expect(file).toBeNull();
     });
 
     it('success', () => {
-        const file = loadFile(__dirname, '../../test/a.js');
+        const file = loadFile(process.cwd(), 'test/a.js');
+
+        expect(file).not.toBeNull();
+    });
+
+    it('json', () => {
+        const file = loadFile(process.cwd(), 'package.json');
+
+        expect(file).not.toBeNull();
+    });
+
+    it('yaml', () => {
+        const file = loadFile(process.cwd(), 'test/a.yaml');
 
         expect(file).not.toBeNull();
     });
