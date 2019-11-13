@@ -55,26 +55,52 @@ const getNpmlogMethod = function(type) {
     return npmlog[type].bind(npmlog);
 };
 
+function dyeMessage(type, message) {
+    switch (type.toLowerCase()) {
+        case 'debug': {
+            return chalk.visible(message);
+        }
+        case 'warn': {
+            return chalk.yellowBright(message);
+        }
+        case 'error': {
+            return chalk.redBright(message);
+        }
+        case 'info': {
+            return chalk.blueBright(message);
+        }
+        case 'success': {
+            return chalk.greenBright(message);
+        }
+        case 'noise': {
+            return chalk.magentaBright(message);
+        }
+        default: {
+            return message;
+        }
+    }
+}
+
 const toString = {
     debug() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgMagenta(' DEBUG ')} ${message} ${os.EOL}`;
+        return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)} ${os.EOL}`;
     },
     warn() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgYellowBright.black(' WARN ')} ${chalk.yellowBright(message)} ${os.EOL}`;
+        return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)} ${os.EOL}`;
     },
     error() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgRed(' ERROR ')} ${chalk.redBright(message)} ${os.EOL}`;
+        return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)} ${os.EOL}`;
     },
     info() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgBlue(' INFO ')} ${chalk.blueBright(message)} ${os.EOL}`;
+        return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)} ${os.EOL}`;
     },
     success() {
         const message = utils.format(...(arguments || []));
-        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${chalk.greenBright(message)} ${os.EOL}`;
+        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)} ${os.EOL}`;
     },
 };
 
@@ -82,9 +108,9 @@ const getMethod = function(type) {
     const logger = getNpmlogMethod(type);
     return function(...args) {
         if (args.length <= 1) {
-            return logger(false, ...args);
+            return logger(false, ...args.map(arg => dyeMessage(type, arg)));
         }
-        return logger(...args);
+        return logger(args[0], ...args.splice(1).map(arg => dyeMessage(type, arg)));
     };
     // const logger = getStdoutMethod(type);
     // return function(...args) {
