@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { smartMerge } = require('../');
+const { smartMerge } = require('../..');
 const merge = require('webpack-merge');
 
 describe('smartMerge', () => {

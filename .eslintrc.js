@@ -8,6 +8,6 @@ module.exports = {
         "eslint-config-2o3t"
     ],
     parserOptions: {
-        parser: "babel-eslint"
+        parser: "babel-eslint",
     },
 }

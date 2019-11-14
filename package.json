@@ -1,6 +1,6 @@
 {
     "name": "@micro-app/shared-utils",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "description": "[Shared] shared utilities for micro-app.",
     "main": "index.js",
     "scripts": {
@@ -8,17 +8,16 @@
         "lint:fix": "npm run lint -- --fix",
         "test": "jest"
     },
-    "homepage": "https://github.com/MicrosApp/MicroApp-Shared-Utils",
+    "homepage": "https://github.com/MicroAppJS/MicroApp-Shared-Utils",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MicrosApp/MicroApp-Shared-Utils.git"
+        "url": "git+https://github.com/MicroAppJS/MicroApp-Shared-Utils.git"
     },
     "bugs": {
-        "url": "https://github.com/MicrosApp/MicroApp-Shared-Utils/issues"
+        "url": "https://github.com/MicroAppJS/MicroApp-Shared-Utils/issues"
     },
     "files": [
-        "constants",
-        "libs",
+        "src",
         "index.js"
     ],
     "keywords": [
@@ -54,13 +53,23 @@
         "assert": "^2.0.0",
         "chalk": "^2.4.2",
         "cheerio": "^1.0.0-rc.3",
+        "dedent": "^0.7.0",
         "fs-extra": "^8.1.0",
+        "git-url-parse": "^11.1.2",
+        "glob-parent": "^5.1.0",
+        "globby": "^10.0.1",
+        "import-fresh": "^3.1.0",
+        "is-glob": "^4.0.1",
         "lodash": "^4.17.15",
+        "npm-package-arg": "^6.1.1",
+        "npmlog": "^4.1.2",
         "ora": "^3.4.0",
+        "parse-json": "^5.0.0",
         "semver": "^6.3.0",
         "semver-regex": "^3.1.0",
         "stream-to-string": "^1.2.0",
-        "try-require": "^1.2.1"
+        "try-require": "^1.2.1",
+        "yaml": "^1.7.2"
     },
     "engines": {
         "node": ">=8"
