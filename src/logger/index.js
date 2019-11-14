@@ -48,13 +48,6 @@ const getStdoutMethod = function(type) {
     return process.stdout.write.bind(process.stdout);
 };
 
-const getNpmlogMethod = function(type) {
-    if ([ 'debug' ].includes(type)) {
-        type = 'verbose';
-    }
-    return npmlog[type].bind(npmlog);
-};
-
 function dyeMessage(type, message) {
     switch (type.toLowerCase()) {
         case 'debug': {
@@ -81,7 +74,7 @@ function dyeMessage(type, message) {
     }
 }
 
-const toString = {
+const format = {
     debug() {
         const message = utils.format(...(arguments || []));
         return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)} ${os.EOL}`;
@@ -104,38 +97,31 @@ const toString = {
     },
 };
 
-const getMethod = function(type) {
-    const logger = getNpmlogMethod(type);
-    return function(...args) {
-        if (args.length <= 1) {
-            return logger(false, ...args.map(arg => dyeMessage(type, arg)));
-        }
-        return logger(args[0], ...args.splice(1).map(arg => dyeMessage(type, arg)));
-    };
-    // const logger = getStdoutMethod(type);
-    // return function(...args) {
-    //     return logger(toString[type].call(toString, ...args));
-    // };
-};
+class Logger {
 
-const logger = {
-    toString,
+    constructor(log, { alias = new Map(), customFormat = new Map() }) {
+        this.npmlog = log;
+        this.aliasMap = new Map(alias);
+        // 兼容
+        this.customFormatMap = new Map(customFormat);
+    }
+
     debug() {
         // if (!process.env.MICRO_APP_DEBUG_LOGGER) return; // 是否开启
-        return getMethod('debug')(...arguments);
-    },
+        return this.getMethod('debug')(...arguments);
+    }
     warn() {
-        return getMethod('warn')(...arguments);
-    },
+        return this.getMethod('warn')(...arguments);
+    }
     error() {
-        return getMethod('error')(...arguments);
-    },
+        return this.getMethod('error')(...arguments);
+    }
     info() {
-        return getMethod('info')(...arguments);
-    },
+        return this.getMethod('info')(...arguments);
+    }
     success() {
-        return getMethod('success')(...arguments);
-    },
+        return this.getMethod('success')(...arguments);
+    }
 
     /**
      * spinner
@@ -150,7 +136,7 @@ const logger = {
             prefixText: `${chalk.bgHex('#EE6B2C')(' PENDING ')} `,
         };
         return ora(typeof message === 'string' ? defulatOpts : Object.assign({}, defulatOpts, message));
-    },
+    }
 
     throw(e) {
         if (e instanceof Error) {
@@ -165,7 +151,7 @@ const logger = {
             getStdoutMethod('error')(chalk.grey(stack.slice(2).join(os.EOL)) + os.EOL);
         }
         process.exit(1);
-    },
+    }
 
     assert(...args) {
         try {
@@ -173,18 +159,75 @@ const logger = {
         } catch (err) {
             this.throw('[assert]', err.message);
         }
-    },
-};
-module.exports = new Proxy(logger, {
-    get(target, prop) {
-        if (!(prop in target) && typeof prop === 'string') {
-            return getMethod(prop).bind(target);
-        }
-        return target[prop];
-    },
-});
+    }
 
-module.exports.npmlog = npmlog;
+    getMethod(type) {
+        const logger = this.getNpmlogMethod(type);
+        return function(...args) {
+            if (args.length <= 1) {
+                return logger(false, ...args.map(arg => dyeMessage(type, arg)));
+            }
+            return logger(args[0], ...args.splice(1).map(arg => dyeMessage(type, arg)));
+        };
+        // const logger = getStdoutMethod(type);
+        // return function(...args) {
+        //     return logger(format[type].call(format, ...args));
+        // };
+    }
+
+    getNpmlogMethod(type) {
+        if ([ 'debug' ].includes(type)) {
+            type = 'verbose';
+        }
+        return this.npmlog[type].bind(this.npmlog);
+    }
+
+    setAlias(type, value) {
+        return this.aliasMap.set(type, value);
+    }
+
+    removeAlias(type) {
+        return this.aliasMap.delete(type);
+    }
+
+    getAlias(type) {
+        return this.aliasMap.get(type);
+    }
+
+    newGroup(name, ...args) {
+        const newLog = this.npmlog.newGroup(name, ...args);
+        return factroy(newLog, { alias: this.aliasMap, customFormat: this.customFormatMap });
+    }
+
+    addCustomToString(key, value) {
+        this.customFormatMap.set(key, value);
+    }
+
+    get format() { // 兼容 toString
+        return new Proxy(this, {
+            get(target, prop) {
+                return target.customFormatMap.get(prop);
+            },
+        });
+    }
+}
+
+function factroy(log, opts = {}) {
+    return new Proxy(new Logger(log, opts), {
+        get(target, prop) {
+            if (!(prop in target) && typeof prop === 'string' && (prop in npmlog)) {
+                return target.getMethod(prop);
+            }
+            const alias = target.getAlias(prop);
+            if (alias) {
+                return target.getMethod(alias);
+            }
+            return target[prop];
+        },
+    });
+}
+
+module.exports = factroy(npmlog, { customFormat: Object.entries(format) });
+
 module.exports.getStdoutMethod = getStdoutMethod;
-module.exports.getNpmlogMethod = getNpmlogMethod;
-module.exports.getMethod = getMethod;
+
