@@ -1,3 +1,5 @@
+/// <reference types="node"/>
+
 import fs from 'fs-extra';
 import chalk from 'chalk';
 import cheerio from 'cheerio';
@@ -11,6 +13,8 @@ import globParent from 'glob-parent';
 import isGlob from 'is-glob';
 import npa from 'npm-package-arg';
 import parseGitUrl from 'git-url-parse';
+import multimatch from 'multimatch';
+import stringifyObject from 'stringify-object';
 
 export function tryRequire( id: string, req?: Object): any | null;
 export function assert(value: any, message?: string | Error): void;
@@ -28,9 +32,9 @@ export {
     getPadLength,
     injectHtml,
     loadFile,
-    logger,
     smartMerge,
     virtualFile,
+    logger,
 };
 
 export {
@@ -48,4 +52,6 @@ export {
     isGlob,
     npa,
     parseGitUrl,
+    multimatch,
+    stringifyObject,
 }

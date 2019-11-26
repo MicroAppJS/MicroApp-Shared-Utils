@@ -2,6 +2,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
+const _ = require('lodash');
 
 const loaders = require('./loaders');
 const logger = require('../logger');
@@ -46,7 +47,11 @@ function load(root, filename) {
 }
 
 function loadFile(root, filename, { before, after } = {}) {
-    if (!root || !filename) {
+    if (!_.isEmpty(root) && _.isEmpty(filename)) {
+        filename = path.basename(root);
+        root = path.dirname(root);
+    }
+    if (_.isEmpty(root) || _.isEmpty(filename)) {
         return null;
     }
     if (!isSupport(filename)) {

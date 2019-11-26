@@ -53,4 +53,10 @@ describe('Logger', () => {
 
     });
 
+
+    it('logger debug', () => {
+        logger.level = 'silly';
+        logger.debug('abc');
+    });
+
 });

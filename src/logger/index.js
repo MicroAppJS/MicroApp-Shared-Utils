@@ -6,12 +6,11 @@ const chalk = require('chalk');
 const utils = require('util');
 const ora = require('ora');
 const os = require('os');
+const stringifyObject = require('stringify-object');
+const _ = require('lodash');
 
 npmlog.heading = require('../constants').SCOPE_NAME || '@micro-app';
 
-if (process.env.MICRO_APP_LOGGER_LEVEL) {
-    npmlog.level = process.env.MICRO_APP_LOGGER_LEVEL === 'true' ? 'silly' : process.env.MICRO_APP_LOGGER_LEVEL;
-}
 // npmlog.prefixStyle = {};
 const CUSTOM_LEVEL = {
     success: {
@@ -48,11 +47,21 @@ const getStdoutMethod = function(type) {
     return process.stdout.write.bind(process.stdout);
 };
 
+function formatObject(message) {
+    if (_.isString(message)) {
+        return message;
+    }
+    return stringifyObject(message, {
+        indent: '  ',
+        singleQuotes: false,
+        inlineCharacterLimit: 12,
+    });
+}
+
+// TODO 优化输出
 function dyeMessage(type, message) {
+    message = formatObject(message);
     switch (type.toLowerCase()) {
-        case 'debug': {
-            return chalk.visible(message);
-        }
         case 'warn': {
             return chalk.yellowBright(message);
         }
@@ -107,7 +116,6 @@ class Logger {
     }
 
     debug() {
-        // if (!process.env.MICRO_APP_DEBUG_LOGGER) return; // 是否开启
         return this.getMethod('debug')(...arguments);
     }
     warn() {
@@ -162,24 +170,26 @@ class Logger {
     }
 
     getMethod(type) {
+        if ([ 'debug' ].includes(type)) { // 不再需要 debug
+            type = 'verbose';
+        }
         const logger = this.getNpmlogMethod(type);
+        if (typeof logger !== 'function') {
+            return logger;
+        }
         return function(...args) {
             if (args.length <= 1) {
                 return logger(false, ...args.map(arg => dyeMessage(type, arg)));
             }
             return logger(args[0], ...args.splice(1).map(arg => dyeMessage(type, arg)));
         };
-        // const logger = getStdoutMethod(type);
-        // return function(...args) {
-        //     return logger(format[type].call(format, ...args));
-        // };
     }
 
     getNpmlogMethod(type) {
-        if ([ 'debug' ].includes(type)) {
-            type = 'verbose';
+        if (typeof this.npmlog[type] === 'function') {
+            return this.npmlog[type].bind(this.npmlog);
         }
-        return this.npmlog[type].bind(this.npmlog);
+        return this.npmlog[type];
     }
 
     setAlias(type, value) {
@@ -194,13 +204,13 @@ class Logger {
         return this.aliasMap.get(type);
     }
 
+    addCustomToString(key, value) {
+        this.customFormatMap.set(key, value);
+    }
+
     newGroup(name, ...args) {
         const newLog = this.npmlog.newGroup(name, ...args);
         return factroy(newLog, { alias: this.aliasMap, customFormat: this.customFormatMap });
-    }
-
-    addCustomToString(key, value) {
-        this.customFormatMap.set(key, value);
     }
 
     get format() { // 兼容 toString
@@ -215,14 +225,21 @@ class Logger {
 function factroy(log, opts = {}) {
     return new Proxy(new Logger(log, opts), {
         get(target, prop) {
-            if (!(prop in target) && typeof prop === 'string' && (prop in npmlog)) {
+            if (prop in target) {
+                return target[prop];
+            }
+            if ([ 'silly', 'verbose', 'info', 'timing', 'http', 'notice', 'warn', 'error', 'silent' ].includes(prop)) {
                 return target.getMethod(prop);
             }
             const alias = target.getAlias(prop);
             if (alias) {
                 return target.getMethod(alias);
             }
-            return target[prop];
+            return log[prop];
+        },
+        set(target, prop, value) {
+            log[prop] = value;
+            return true;
         },
     });
 }
@@ -231,3 +248,4 @@ module.exports = factroy(npmlog, { customFormat: Object.entries(format) });
 
 module.exports.getStdoutMethod = getStdoutMethod;
 
+module.exports.Logger = Logger;
