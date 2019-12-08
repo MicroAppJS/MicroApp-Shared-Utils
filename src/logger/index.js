@@ -9,18 +9,47 @@ const os = require('os');
 const stringifyObject = require('stringify-object');
 const _ = require('lodash');
 
-npmlog.heading = require('../constants').SCOPE_NAME || '@micro-app';
+const CONSTANTS = require('../constants');
+// npmlog.heading = CONSTANTS.SCOPE_NAME || '@micro-app';
+
+if (process.stdout) {
+    npmlog.stream = process.stdout;
+}
+
+const _disp = npmlog.disp;
+npmlog.disp = new Proxy(_disp, {
+    set(target, prop, value) {
+        if (value) {
+            const pad = 5 - value.length;
+            if (pad > 0) {
+                target[prop] = ` ${value}${' '.repeat(pad)}`;
+                return true;
+            }
+        }
+        target[prop] = value;
+        return true;
+    },
+});
+Object.keys(_disp).forEach(key => {
+    npmlog.disp[key] = _disp[key];
+});
+
+// reset
+npmlog.addLevel('info', 2000, { fg: 'black', bg: 'blue' }, 'INFO');
+npmlog.addLevel('http', 3000, { fg: 'black', bg: 'cyan' }, 'HTTP');
+npmlog.addLevel('warn', 4000, { fg: 'black', bg: 'yellow' }, 'WARN');
+npmlog.addLevel('error', 5000, { fg: 'black', bg: 'red' }, 'ERR!');
 
 // npmlog.prefixStyle = {};
 const CUSTOM_LEVEL = {
     success: {
-        level: 3001,
-        fg: 'brightWhite',
+        level: 3500,
+        fg: 'black',
         bg: 'green',
-        bold: true,
     },
     noise: {
         level: 10000,
+        fg: 'black',
         bg: 'magenta',
         beep: true,
     },
@@ -42,16 +71,22 @@ const getStdoutMethod = function(type) {
         return console.log.bind(console);
     }
     if (type === 'error') {
-        return process.stderr.write.bind(process.stderr);
+        return function(...args) {
+            const message = utils.format(...args.concat(os.EOL));
+            return process.stderr.write(message);
+        };
     }
-    return process.stdout.write.bind(process.stdout);
+    return function(...args) {
+        const message = utils.format(...args.concat(os.EOL));
+        return process.stdout.write(message);
+    };
 };
 
 function formatObject(message) {
     if (_.isString(message)) {
         return message;
     }
-    return stringifyObject(message, {
+    return os.EOL + stringifyObject(message, {
         indent: '  ',
         singleQuotes: false,
         inlineCharacterLimit: 12,
@@ -60,7 +95,6 @@ function formatObject(message) {
 
 // TODO 优化输出
 function dyeMessage(type, message) {
-    message = formatObject(message);
     switch (type.toLowerCase()) {
         case 'warn': {
             return chalk.yellowBright(message);
@@ -84,25 +118,34 @@ function dyeMessage(type, message) {
 }
 
 const format = {
-    debug() {
-        const message = utils.format(...(arguments || []));
-        return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)} ${os.EOL}`;
+    debug(...arrs) {
+        const message = utils.format(...(arrs || []));
+        return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)}`;
     },
-    warn() {
-        const message = utils.format(...(arguments || []));
-        return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)} ${os.EOL}`;
+    warn(...arrs) {
+        const message = utils.format(...(arrs || []));
+        return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)}`;
     },
-    error() {
-        const message = utils.format(...(arguments || []));
-        return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)} ${os.EOL}`;
+    error(...arrs) {
+        const message = utils.format(...(arrs || []));
+        return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)}`;
     },
-    info() {
-        const message = utils.format(...(arguments || []));
-        return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)} ${os.EOL}`;
+    info(...arrs) {
+        const message = utils.format(...(arrs || []));
+        return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)}`;
     },
-    success() {
-        const message = utils.format(...(arguments || []));
-        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)} ${os.EOL}`;
+    success(...arrs) {
+        const message = utils.format(...(arrs || []));
+        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)}`;
+    },
+    logo(...arrs) {
+        const message = utils.format(...(arrs || []));
+        const { NAME } = CONSTANTS;
+        return `${chalk.bgHex('#662F88')(` ${NAME} `)} ${message}`;
+    },
+    json(...arrs) {
+        const message = utils.format(...(arrs || []).map(item => formatObject(item)));
+        return `${chalk.bgRgb(20, 68, 106)(' JSON ')} ${message}`;
     },
 };
 
@@ -113,6 +156,10 @@ class Logger {
         this.aliasMap = new Map(alias);
         // 兼容
         this.customFormatMap = new Map(customFormat);
+    }
+
+    checkLevel(l) {
+        return npmlog.levels[npmlog.level] > l;
     }
 
     debug() {
@@ -129,6 +176,13 @@ class Logger {
     }
     success() {
         return this.getMethod('success')(...arguments);
+    }
+    json() {
+        if (this.checkLevel(3500)) return;
+        return this.getMethod('json')(...arguments);
+    }
+    logo() { // 不会禁用
+        return this.getMethod('logo')(...arguments);
     }
 
     /**
@@ -149,7 +203,11 @@ class Logger {
     throw(e) {
         if (e instanceof Error) {
             const error = e;
-            this.error(...Array.prototype.splice.call(arguments, 1));
+            const msgs = Array.prototype.splice.call(arguments, 1);
+            if (msgs.length === 0) {
+                msgs.push(e.message);
+            }
+            this.error(...msgs);
             const stack = error.stack.split(/\r?\n/mg);
             getStdoutMethod('error')(chalk.grey(stack.slice(1).join(os.EOL)) + os.EOL);
         } else {
@@ -170,6 +228,12 @@ class Logger {
     }
 
     getMethod(type) {
+        if ([ 'logo', 'json' ].includes(type)) {
+            const logger = this.getStdoutMethod(type);
+            return (...args) => {
+                return logger(this.format[type](...args));
+            };
+        }
         if ([ 'debug' ].includes(type)) { // 不再需要 debug
             type = 'verbose';
         }
@@ -186,10 +250,18 @@ class Logger {
     }
 
     getNpmlogMethod(type) {
-        if (typeof this.npmlog[type] === 'function') {
-            return this.npmlog[type].bind(this.npmlog);
+        const log = this.npmlog[type];
+        if (typeof log === 'function') {
+            return log.bind(this.npmlog);
         }
-        return this.npmlog[type];
+        return log;
+    }
+
+    getStdoutMethod(type) {
+        if ([ 'logo', 'json' ].includes(type)) {
+            type = 'log';
+        }
+        return getStdoutMethod(type);
     }
 
     setAlias(type, value) {
@@ -249,3 +321,5 @@ module.exports = factroy(npmlog, { customFormat: Object.entries(format) });
 module.exports.getStdoutMethod = getStdoutMethod;
 
 module.exports.Logger = Logger;
+
+module.exports.SPACE_CHAR = ' '.repeat(4);

@@ -15,6 +15,7 @@ import npa from 'npm-package-arg';
 import parseGitUrl from 'git-url-parse';
 import multimatch from 'multimatch';
 import stringifyObject from 'stringify-object';
+import LRU from 'lru-cache';
 
 export function tryRequire( id: string, req?: Object): any | null;
 export function assert(value: any, message?: string | Error): void;
@@ -26,6 +27,8 @@ import * as loadFile from './src/loadFile';
 import * as logger from './src/logger';
 import * as smartMerge from './src/smartMerge';
 import * as virtualFile from './src/virtualFile';
+import * as openBrowser from './src/openBrowser';
+import * as env from './src/env';
 
 export {
     moduleAlias,
@@ -35,6 +38,8 @@ export {
     smartMerge,
     virtualFile,
     logger,
+    openBrowser,
+    env,
 };
 
 export {
@@ -54,4 +59,5 @@ export {
     parseGitUrl,
     multimatch,
     stringifyObject,
+    LRU,
 }

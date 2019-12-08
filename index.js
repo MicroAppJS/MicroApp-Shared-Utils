@@ -20,6 +20,8 @@ const internal = [
     'logger',
     'smartMerge',
     'virtualFile',
+    'openBrowser',
+    'Env',
 ].reduce((obj, key) => {
     obj[key] = `./src/${key}`;
     return obj;
@@ -46,11 +48,15 @@ const thirdParty = {
     parseGitUrl: 'git-url-parse',
     multimatch: 'multimatch',
     stringifyObject: 'stringify-object',
+    LRU: 'lru-cache',
 };
 
 Object.keys(thirdParty).forEach(key => {
     defineProperty(key, thirdParty);
 });
+
+
+// ********************
 
 const alias = {
     assert: () => {

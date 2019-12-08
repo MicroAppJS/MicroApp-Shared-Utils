@@ -12,7 +12,7 @@ const DEFAULT_LOADERS = Object.freeze({
     '.json': loaders.loadJson,
     '.yaml': loaders.loadYaml,
     '.yml': loaders.loadYaml,
-    // noExt: loaders.loadYaml,
+    noExt: loaders.loadYaml,
 });
 
 function loaderExt(filename) {
