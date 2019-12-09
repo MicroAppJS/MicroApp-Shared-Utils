@@ -34,26 +34,8 @@ Object.keys(_disp).forEach(key => {
     npmlog.disp[key] = _disp[key];
 });
 
-// reset
-npmlog.addLevel('info', 2000, { fg: 'black', bg: 'blue' }, 'INFO');
-npmlog.addLevel('http', 3000, { fg: 'black', bg: 'cyan' }, 'HTTP');
-npmlog.addLevel('warn', 4000, { fg: 'black', bg: 'yellow' }, 'WARN');
-npmlog.addLevel('error', 5000, { fg: 'black', bg: 'red' }, 'ERR!');
-
 // npmlog.prefixStyle = {};
-const CUSTOM_LEVEL = {
-    success: {
-        level: 3500,
-        fg: 'black',
-        bg: 'green',
-    },
-    noise: {
-        level: 10000,
-        fg: 'black',
-        bg: 'magenta',
-        beep: true,
-    },
-};
+const CUSTOM_LEVEL = require('./levels');
 Object.keys(CUSTOM_LEVEL).forEach(key => {
     const style = CUSTOM_LEVEL[key];
     const disp = style.disp || (key.length > 4 ? key.substr(0, 4) : key).toUpperCase();
@@ -163,7 +145,7 @@ class Logger {
     }
 
     debug() {
-        return this.getMethod('debug')(...arguments);
+        return this.getMethod('verbose')(...arguments);
     }
     warn() {
         return this.getMethod('warn')(...arguments);
@@ -223,7 +205,9 @@ class Logger {
         try {
             assert(...args);
         } catch (err) {
-            this.throw('[assert]', err.message);
+            const e = new Error(err.message);
+            e.stack = e.stack.split(/\r?\n/mg).slice(1).join(os.EOL);
+            this.throw(e, '[assert]', err.message);
         }
     }
 
@@ -233,9 +217,6 @@ class Logger {
             return (...args) => {
                 return logger(this.format[type](...args));
             };
-        }
-        if ([ 'debug' ].includes(type)) { // 不再需要 debug
-            type = 'verbose';
         }
         const logger = this.getNpmlogMethod(type);
         if (typeof logger !== 'function') {
@@ -258,7 +239,7 @@ class Logger {
     }
 
     getStdoutMethod(type) {
-        if ([ 'logo', 'json' ].includes(type)) {
+        if (![ 'info', 'error', 'warn' ].includes(type)) {
             type = 'log';
         }
         return getStdoutMethod(type);

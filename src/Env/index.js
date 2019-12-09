@@ -3,8 +3,8 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const LRU = require('./node_modules/lru-cache');
-const semver = require('./node_modules/semver');
+const LRU = require('lru-cache');
+const semver = require('semver');
 
 let _hasYarn;
 const _yarnProjects = new LRU({

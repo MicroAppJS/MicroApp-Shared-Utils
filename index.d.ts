@@ -29,6 +29,7 @@ import * as smartMerge from './src/smartMerge';
 import * as virtualFile from './src/virtualFile';
 import * as openBrowser from './src/openBrowser';
 import * as env from './src/env';
+import * as validateSchema from './src/validateSchema';
 
 export {
     moduleAlias,
