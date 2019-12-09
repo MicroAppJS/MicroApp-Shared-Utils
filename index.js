@@ -1,5 +1,17 @@
 'use strict';
 
+const output = {};
+
+function defineProperty(key, from, to = output) {
+    if (to[key]) throw new Error(`"${key}" already exsits!`);
+    // lazy
+    Object.defineProperty(to, key, {
+        get() {
+            return require(from[key]);
+        },
+    });
+}
+
 const internal = [
     'moduleAlias',
     'getPadLength',
@@ -8,12 +20,17 @@ const internal = [
     'logger',
     'smartMerge',
     'virtualFile',
+    'openBrowser',
+    'Env',
+    'validateSchema',
 ].reduce((obj, key) => {
-    obj[key] = require(`./src/${key}`);
+    obj[key] = `./src/${key}`;
     return obj;
 }, {});
 
-internal.assert = internal.logger.assert.bind(internal.logger);
+Object.keys(internal).forEach(key => {
+    defineProperty(key, internal);
+});
 
 const thirdParty = {
     fs: 'fs-extra',
@@ -30,15 +47,29 @@ const thirdParty = {
     isGlob: 'is-glob',
     npa: 'npm-package-arg',
     parseGitUrl: 'git-url-parse',
+    multimatch: 'multimatch',
+    stringifyObject: 'stringify-object',
+    LRU: 'lru-cache',
 };
 
 Object.keys(thirdParty).forEach(key => {
-    // lazy
-    Object.defineProperty(internal, key, {
-        get() {
-            return require(thirdParty[key]);
-        },
+    defineProperty(key, thirdParty);
+});
+
+
+// ********************
+
+const alias = {
+    assert: () => {
+        return output.logger.assert.bind(output.logger);
+    },
+};
+
+Object.keys(alias).forEach(key => {
+    if (output[key]) throw new Error(`"${key}" already exsits!`);
+    Object.defineProperty(output, key, {
+        get: alias[key],
     });
 });
 
-module.exports = internal;
+module.exports = output;

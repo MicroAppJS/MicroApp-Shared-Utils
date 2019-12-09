@@ -42,4 +42,10 @@ describe('loadFile', () => {
         expect(file).not.toBeNull();
     });
 
+    it('json', () => {
+        const file = loadFile(process.cwd() + '/package.json');
+
+        expect(file).not.toBeNull();
+    });
+
 });
