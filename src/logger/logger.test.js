@@ -41,7 +41,7 @@ describe('Logger', () => {
         const spinner = logger.spinner('abc');
         spinner.start();
         setTimeout(() => {
-            spinner.success('cc');
+            spinner.succeed('cc');
         }, 3000);
 
     });

@@ -5,8 +5,8 @@ const inquirer = require('inquirer');
 const logger = require('../logger');
 const npmlog = logger.npmlog;
 
-const SCOPE_NAME = require('../constants').SCOPE_NAME || '@micro-app';
-const prefix = `[${chalk.green('?')}] ${chalk.bgBlack(chalk.whiteBright(SCOPE_NAME))}`;
+const SCOPE_NAME = 'Q&A?';
+const prefix = chalk.bgMagentaBright(` ${chalk.whiteBright(SCOPE_NAME.substr(0, 2))}`) + chalk.bgCyanBright(`${chalk.whiteBright(SCOPE_NAME.substr(2, 2))} `);
 
 function createDefaultOptions(options = {}) {
     return Object.assign({
@@ -86,3 +86,4 @@ function input(message, { filter, validate } = {}) {
 exports.confirm = confirm;
 exports.select = select;
 exports.input = input;
+exports.createDefaultOptions = createDefaultOptions;

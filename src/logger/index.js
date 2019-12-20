@@ -177,7 +177,7 @@ class Logger {
         const defulatOpts = {
             text: message,
             color: 'yellow',
-            prefixText: `${chalk.bgHex('#EE6B2C')(' PENDING ')} `,
+            prefixText: chalk.bgHex('#EC6D29')(chalk.white(' WAIT ')),
         };
         return ora(typeof message === 'string' ? defulatOpts : Object.assign({}, defulatOpts, message));
     }

@@ -18,6 +18,7 @@ const internal = [
     'injectHtml',
     'loadFile',
     'logger',
+    'prompt',
     'smartMerge',
     'virtualFile',
     'openBrowser',
@@ -50,6 +51,11 @@ const thirdParty = {
     multimatch: 'multimatch',
     stringifyObject: 'stringify-object',
     LRU: 'lru-cache',
+    inquirer: 'inquirer',
+    execa: 'execa',
+    yParser: 'yargs-parser',
+    yUnParser: 'yargs-unparser',
+    debug: 'debug',
 };
 
 Object.keys(thirdParty).forEach(key => {

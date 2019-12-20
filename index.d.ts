@@ -16,6 +16,11 @@ import parseGitUrl from 'git-url-parse';
 import multimatch from 'multimatch';
 import stringifyObject from 'stringify-object';
 import LRU from 'lru-cache';
+import inquirer from 'inquirer';
+import execa from 'execa';
+import yParser from 'yargs-parser';
+import yUnParser from 'yargs-unparser';
+import debug from 'debug';
 
 export function tryRequire( id: string, req?: Object): any | null;
 export function assert(value: any, message?: string | Error): void;
@@ -23,13 +28,14 @@ export function assert(value: any, message?: string | Error): void;
 import * as moduleAlias from './src/moduleAlias';
 import * as getPadLength from './src/getPadLength';
 import * as injectHtml from './src/injectHtml';
-import * as loadFile from './src/loadFile';
 import * as logger from './src/logger';
+import * as prompt from './src/prompt';
 import * as smartMerge from './src/smartMerge';
 import * as virtualFile from './src/virtualFile';
 import * as openBrowser from './src/openBrowser';
 import * as env from './src/env';
-import * as validateSchema from './src/validateSchema';
+import validateSchema from './src/validateSchema';
+import loadFile from './src/loadFile';
 
 export {
     moduleAlias,
@@ -39,6 +45,7 @@ export {
     smartMerge,
     virtualFile,
     logger,
+    prompt,
     openBrowser,
     env,
 };
@@ -61,4 +68,9 @@ export {
     multimatch,
     stringifyObject,
     LRU,
+    inquirer,
+    execa,
+    yParser,
+    yUnParser,
+    debug
 }

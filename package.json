@@ -1,6 +1,6 @@
 {
     "name": "@micro-app/shared-utils",
-    "version": "0.1.8",
+    "version": "0.1.11",
     "description": "[Shared] shared utilities for micro-app.",
     "main": "index.js",
     "scripts": {
@@ -8,13 +8,13 @@
         "lint:fix": "npm run lint -- --fix",
         "test": "jest"
     },
-    "homepage": "https://github.com/MicroAppJS/MicroApp-Shared-Utils",
+    "homepage": "https://github.com/MicroAppJS/shared-utils",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MicroAppJS/MicroApp-Shared-Utils.git"
+        "url": "git+https://github.com/MicroAppJS/shared-utils.git"
     },
     "bugs": {
-        "url": "https://github.com/MicroAppJS/MicroApp-Shared-Utils/issues"
+        "url": "https://github.com/MicroAppJS/shared-utils/issues"
     },
     "files": [
         "src",
@@ -40,14 +40,14 @@
         ]
     },
     "devDependencies": {
-        "@types/jest": "^24.0.23",
+        "@types/jest": "^24.0.24",
         "babel-eslint": "^10.0.3",
-        "coveralls": "^3.0.7",
+        "coveralls": "^3.0.9",
         "eslint": "^5.16.0",
         "eslint-config-2o3t": "^1.1.17",
         "husky": "^3.1.0",
         "jest": "^24.9.0",
-        "lint-staged": "^9.4.3",
+        "lint-staged": "^9.5.0",
         "webpack-merge": "^4.2.2"
     },
     "dependencies": {
@@ -56,12 +56,15 @@
         "assert": "^2.0.0",
         "chalk": "^2.4.2",
         "cheerio": "^1.0.0-rc.3",
+        "debug": "^4.1.1",
         "dedent": "^0.7.0",
+        "execa": "^3.4.0",
         "fs-extra": "^8.1.0",
         "git-url-parse": "^11.1.2",
         "glob-parent": "^5.1.0",
         "globby": "^10.0.1",
         "import-fresh": "^3.2.1",
+        "inquirer": "^7.0.1",
         "is-glob": "^4.0.1",
         "lodash": "^4.17.15",
         "lru-cache": "^5.1.1",
@@ -76,7 +79,9 @@
         "stream-to-string": "^1.2.0",
         "stringify-object": "^3.3.0",
         "try-require": "^1.2.1",
-        "yaml": "^1.7.2"
+        "yaml": "^1.7.2",
+        "yargs-parser": "^16.1.0",
+        "yargs-unparser": "^1.5.0"
     },
     "engines": {
         "node": ">=8"
