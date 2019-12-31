@@ -42,7 +42,6 @@
     "devDependencies": {
         "@types/jest": "^24.0.24",
         "babel-eslint": "^10.0.3",
-        "coveralls": "^3.0.9",
         "eslint": "^5.16.0",
         "eslint-config-2o3t": "^1.1.17",
         "husky": "^3.1.0",
