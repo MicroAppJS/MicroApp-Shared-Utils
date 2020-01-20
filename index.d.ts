@@ -21,8 +21,13 @@ import execa from 'execa';
 import yParser from 'yargs-parser';
 import yUnParser from 'yargs-unparser';
 import debug from 'debug';
+import importFresh from 'import-fresh';
+import shell from 'shelljs';
+import onExit from 'signal-exit';
+import hash from 'hash-sum';
+import path from 'path';
 
-export function tryRequire( id: string, req?: Object): any | null;
+export function tryRequire(id: string, req?: Object): any | null;
 export function assert(value: any, message?: string | Error): void;
 
 import * as moduleAlias from './src/moduleAlias';
@@ -33,44 +38,10 @@ import * as prompt from './src/prompt';
 import * as smartMerge from './src/smartMerge';
 import * as virtualFile from './src/virtualFile';
 import * as openBrowser from './src/openBrowser';
-import * as env from './src/env';
+import * as Env from './src/Env';
 import validateSchema from './src/validateSchema';
 import loadFile from './src/loadFile';
 
-export {
-    moduleAlias,
-    getPadLength,
-    injectHtml,
-    loadFile,
-    smartMerge,
-    virtualFile,
-    logger,
-    prompt,
-    openBrowser,
-    env,
-};
+export { moduleAlias, getPadLength, injectHtml, loadFile, smartMerge, virtualFile, logger, prompt, openBrowser, Env };
 
-export {
-    assert,
-    fs,
-    chalk,
-    cheerio,
-    semver,
-    semverRegex,
-    _,
-    ora,
-    dedent,
-    globby,
-    globParent,
-    isGlob,
-    npa,
-    parseGitUrl,
-    multimatch,
-    stringifyObject,
-    LRU,
-    inquirer,
-    execa,
-    yParser,
-    yUnParser,
-    debug
-}
+export { assert, fs, chalk, cheerio, semver, semverRegex, _, ora, dedent, globby, globParent, isGlob, npa, parseGitUrl, multimatch, stringifyObject, LRU, inquirer, execa, yParser, yUnParser, debug, importFresh, shell, onExit, hash, path };

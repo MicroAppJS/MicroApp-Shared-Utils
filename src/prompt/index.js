@@ -63,6 +63,32 @@ function select(message, { choices, filter, validate } = {}) {
         });
 }
 
+function check(message, { choices, filter, validate } = {}) {
+    if (!choices || choices.length <= 0) {
+        logger.throw('prompt', 'select choices is empty!');
+    }
+
+    npmlog.pause();
+
+    return inquirer
+        .prompt([
+            createDefaultOptions({
+                type: 'checkbox',
+                name: 'check',
+                message,
+                choices,
+                pageSize: choices.length,
+                filter,
+                validate,
+            }),
+        ])
+        .then(answers => {
+            npmlog.resume();
+
+            return answers.check;
+        });
+}
+
 function input(message, { filter, validate } = {}) {
     npmlog.pause();
 
@@ -86,4 +112,5 @@ function input(message, { filter, validate } = {}) {
 exports.confirm = confirm;
 exports.select = select;
 exports.input = input;
+exports.check = check;
 exports.createDefaultOptions = createDefaultOptions;

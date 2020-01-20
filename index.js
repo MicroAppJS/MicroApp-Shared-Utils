@@ -56,6 +56,11 @@ const thirdParty = {
     yParser: 'yargs-parser',
     yUnParser: 'yargs-unparser',
     debug: 'debug',
+    importFresh: 'import-fresh',
+    shell: 'shelljs',
+    onExit: 'signal-exit',
+    hash: 'hash-sum',
+    path: 'path',
 };
 
 Object.keys(thirdParty).forEach(key => {

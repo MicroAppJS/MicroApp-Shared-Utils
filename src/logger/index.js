@@ -175,7 +175,7 @@ class Logger {
      */
     spinner(message) {
         const defulatOpts = {
-            text: message,
+            text: typeof message === 'string' ? `${message}\n` : '',
             color: 'yellow',
             prefixText: chalk.bgHex('#EC6D29')(chalk.white(' WAIT ')),
         };

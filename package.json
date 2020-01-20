@@ -1,11 +1,13 @@
 {
     "name": "@micro-app/shared-utils",
-    "version": "0.1.11",
+    "version": "0.1.15",
     "description": "[Shared] shared utilities for micro-app.",
     "main": "index.js",
     "scripts": {
+        "prepublishOnly": "npm run test",
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
+        "commit": "git-cz",
         "test": "jest"
     },
     "homepage": "https://github.com/MicroAppJS/shared-utils",
@@ -40,8 +42,9 @@
         ]
     },
     "devDependencies": {
-        "@types/jest": "^24.0.24",
+        "@types/jest": "^24.0.25",
         "babel-eslint": "^10.0.3",
+        "commitizen": "^2",
         "eslint": "^5.16.0",
         "eslint-config-2o3t": "^1.1.17",
         "husky": "^3.1.0",
@@ -53,7 +56,7 @@
         "ajv": "^6.10.2",
         "ajv-keywords": "^3.4.1",
         "assert": "^2.0.0",
-        "chalk": "^2.4.2",
+        "chalk": "^3.0.0",
         "cheerio": "^1.0.0-rc.3",
         "debug": "^4.1.1",
         "dedent": "^0.7.0",
@@ -61,7 +64,8 @@
         "fs-extra": "^8.1.0",
         "git-url-parse": "^11.1.2",
         "glob-parent": "^5.1.0",
-        "globby": "^10.0.1",
+        "globby": "^10.0.2",
+        "hash-sum": "^2.0.0",
         "import-fresh": "^3.2.1",
         "inquirer": "^7.0.1",
         "is-glob": "^4.0.1",
@@ -75,6 +79,8 @@
         "parse-json": "^5.0.0",
         "semver": "^6.3.0",
         "semver-regex": "^3.1.0",
+        "shelljs": "^0.8.3",
+        "signal-exit": "^3.0.2",
         "stream-to-string": "^1.2.0",
         "stringify-object": "^3.3.0",
         "try-require": "^1.2.1",
