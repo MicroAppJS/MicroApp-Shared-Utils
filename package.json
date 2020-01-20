@@ -44,7 +44,8 @@
     "devDependencies": {
         "@types/jest": "^24.0.25",
         "babel-eslint": "^10.0.3",
-        "commitizen": "^2",
+        "commitizen": "^2.10.1",
+        "cz-conventional-changelog": "^2.1.0",
         "eslint": "^5.16.0",
         "eslint-config-2o3t": "^1.1.17",
         "husky": "^3.1.0",
@@ -90,5 +91,10 @@
     },
     "engines": {
         "node": ">=8"
+    },
+    "config": {
+        "commitizen": {
+            "path": "cz-conventional-changelog"
+        }
     }
 }
