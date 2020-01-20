@@ -47,6 +47,7 @@
         "@types/jest": "^24.0.25",
         "babel-eslint": "^10.0.3",
         "commitizen": "^2.10.1",
+        "conventional-changelog-cli": "^2.0.31",
         "cz-conventional-changelog": "^2.1.0",
         "eslint": "^5.16.0",
         "eslint-config-2o3t": "^1.1.17",
