@@ -1,6 +1,6 @@
 {
     "name": "@micro-app/shared-utils",
-    "version": "0.1.15",
+    "version": "0.1.13",
     "description": "[Shared] shared utilities for micro-app.",
     "main": "index.js",
     "scripts": {
@@ -8,6 +8,8 @@
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
         "commit": "git-cz",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+        "release": "release-it",
         "test": "jest"
     },
     "homepage": "https://github.com/MicroAppJS/shared-utils",
@@ -51,6 +53,7 @@
         "husky": "^3.1.0",
         "jest": "^24.9.0",
         "lint-staged": "^9.5.0",
+        "release-it": "^12.4.3",
         "webpack-merge": "^4.2.2"
     },
     "dependencies": {
