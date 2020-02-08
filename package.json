@@ -1,16 +1,16 @@
 {
     "name": "@micro-app/shared-utils",
-    "version": "0.1.14",
+    "version": "0.1.14-alpha.1",
     "description": "[Shared] shared utilities for micro-app.",
     "main": "index.js",
     "scripts": {
         "prepublishOnly": "npm run test",
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
-        "commit": "git-cz",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+        "test": "jest",
         "release": "release-it",
-        "test": "jest"
+        "release:alpha": "npm run release -- --preRelease=alpha",
+        "release:next": "npm run release -- --preRelease=next"
     },
     "homepage": "https://github.com/MicroAppJS/shared-utils",
     "repository": {
@@ -44,11 +44,9 @@
         ]
     },
     "devDependencies": {
+        "@release-it/conventional-changelog": "^1.1.0",
         "@types/jest": "^24.0.25",
         "babel-eslint": "^10.0.3",
-        "commitizen": "^2.10.1",
-        "conventional-changelog-cli": "^2.0.31",
-        "cz-conventional-changelog": "^2.1.0",
         "eslint": "^5.16.0",
         "eslint-config-2o3t": "^1.1.17",
         "husky": "^3.1.0",
@@ -72,7 +70,7 @@
         "globby": "^10.0.2",
         "hash-sum": "^2.0.0",
         "import-fresh": "^3.2.1",
-        "inquirer": "^7.0.1",
+        "inquirer": "^7.0.4",
         "is-glob": "^4.0.1",
         "lodash": "^4.17.15",
         "lru-cache": "^5.1.1",
@@ -83,7 +81,7 @@
         "ora": "^3.4.0",
         "parse-json": "^5.0.0",
         "semver": "^6.3.0",
-        "semver-regex": "^3.1.0",
+        "semver-regex": "^3.1.1",
         "shelljs": "^0.8.3",
         "signal-exit": "^3.0.2",
         "stream-to-string": "^1.2.0",
@@ -95,10 +93,5 @@
     },
     "engines": {
         "node": ">=8"
-    },
-    "config": {
-        "commitizen": {
-            "path": "cz-conventional-changelog"
-        }
     }
 }

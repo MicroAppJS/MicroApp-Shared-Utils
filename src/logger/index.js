@@ -75,7 +75,7 @@ function formatObject(message) {
     });
 }
 
-// TODO 优化输出
+// color优化输出
 function dyeMessage(type, message) {
     switch (type.toLowerCase()) {
         case 'warn': {
