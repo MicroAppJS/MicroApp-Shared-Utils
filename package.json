@@ -8,7 +8,7 @@
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
         "test": "jest",
-        "release": "release-it",
+        "release": "release-it -c release-it.js",
         "release:alpha": "npm run release -- --preRelease=alpha",
         "release:next": "npm run release -- --preRelease=next"
     },
