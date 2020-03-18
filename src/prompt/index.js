@@ -37,7 +37,7 @@ function confirm(message) {
         });
 }
 
-function select(message, { choices, filter, validate } = {}) {
+function select(message, { choices = [], filter, validate, pageSize = choices.length } = {}) {
     if (!choices || choices.length <= 0) {
         logger.throw('prompt', 'select choices is empty!');
     }
@@ -51,7 +51,7 @@ function select(message, { choices, filter, validate } = {}) {
                 name: 'prompt',
                 message,
                 choices,
-                pageSize: choices.length,
+                pageSize,
                 filter,
                 validate,
             }),
@@ -63,7 +63,7 @@ function select(message, { choices, filter, validate } = {}) {
         });
 }
 
-function check(message, { choices, filter, validate } = {}) {
+function check(message, { choices = [], filter, validate, pageSize = choices.length } = {}) {
     if (!choices || choices.length <= 0) {
         logger.throw('prompt', 'select choices is empty!');
     }
@@ -77,7 +77,7 @@ function check(message, { choices, filter, validate } = {}) {
                 name: 'check',
                 message,
                 choices,
-                pageSize: choices.length,
+                pageSize,
                 filter,
                 validate,
             }),
