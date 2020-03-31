@@ -288,7 +288,11 @@ function factroy(log, opts = {}) {
             if (alias) {
                 return target.getMethod(alias);
             }
-            return log[prop];
+            const item = log[prop];
+            if (_.isFunction(item)) {
+                return item.bind(log);
+            }
+            return item;
         },
         set(target, prop, value) {
             log[prop] = value;
@@ -297,7 +301,13 @@ function factroy(log, opts = {}) {
     });
 }
 
-module.exports = factroy(npmlog, { customFormat: Object.entries(format) });
+function createInstance() {
+    return factroy(npmlog, { customFormat: Object.entries(format) });
+}
+
+module.exports = createInstance();
+
+module.exports.createInstance = createInstance;
 
 module.exports.getStdoutMethod = getStdoutMethod;
 

@@ -92,4 +92,14 @@ describe('Logger', () => {
         newLogger.info('abcdef', 'sdd');
     });
 
+    it('logger createInstance', () => {
+        const { createInstance } = require('.');
+        const newLogger = createInstance();
+        newLogger.info('createInstance', 'pause...');
+        newLogger.pause();
+        newLogger.info('createInstance', 'new...');
+        newLogger.resume();
+        newLogger.info('createInstance', 'resume...');
+    });
+
 });
