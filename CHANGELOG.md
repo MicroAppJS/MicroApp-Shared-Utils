@@ -1,3 +1,10 @@
+## [0.1.17](https://github.com/MicroAppJS/shared-utils/compare/v0.1.16...v0.1.17) (2020-03-31)
+
+
+### Features
+
+* enhance logger ([fac575f](https://github.com/MicroAppJS/shared-utils/commit/fac575f0f5d29b91e4bc113a960ec53a846a8da9))
+
 ## [0.1.16](https://github.com/MicroAppJS/shared-utils/compare/0.1.15...0.1.16) (2020-03-18)
 
 
