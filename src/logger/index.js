@@ -100,26 +100,26 @@ function dyeMessage(type, message) {
 }
 
 const format = {
-    debug(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)}`;
-    },
-    warn(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)}`;
-    },
-    error(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)}`;
-    },
-    info(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)}`;
-    },
-    success(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)}`;
-    },
+    // debug(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)}`;
+    // },
+    // warn(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)}`;
+    // },
+    // error(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)}`;
+    // },
+    // info(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)}`;
+    // },
+    // success(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)}`;
+    // },
     logo(...arrs) {
         const message = utils.format(...(arrs || []));
         const { NAME } = CONSTANTS;
@@ -133,11 +133,9 @@ const format = {
 
 class Logger {
 
-    constructor(log, { alias = new Map(), customFormat = new Map() }) {
+    constructor(log, { alias = new Map() }) {
         this.npmlog = log;
         this.aliasMap = new Map(alias);
-        // 兼容
-        this.customFormatMap = new Map(customFormat);
     }
 
     checkLevel(l) {
@@ -215,7 +213,7 @@ class Logger {
         if ([ 'logo', 'json' ].includes(type)) {
             const logger = this.getStdoutMethod(type);
             return (...args) => {
-                return logger(this.format[type](...args));
+                return logger(format[type](...args));
             };
         }
         const logger = this.getNpmlogMethod(type);
@@ -257,21 +255,9 @@ class Logger {
         return this.aliasMap.get(type);
     }
 
-    addCustomToString(key, value) {
-        this.customFormatMap.set(key, value);
-    }
-
     newGroup(name, ...args) {
         const newLog = this.npmlog.newGroup(name, ...args);
-        return factroy(newLog, { alias: this.aliasMap, customFormat: this.customFormatMap });
-    }
-
-    get format() { // 兼容 toString
-        return new Proxy(this, {
-            get(target, prop) {
-                return target.customFormatMap.get(prop);
-            },
-        });
+        return factroy(newLog, { alias: this.aliasMap });
     }
 }
 
@@ -302,7 +288,7 @@ function factroy(log, opts = {}) {
 }
 
 function createInstance() {
-    return factroy(npmlog, { customFormat: Object.entries(format) });
+    return factroy(npmlog);
 }
 
 module.exports = createInstance();
