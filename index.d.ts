@@ -26,8 +26,8 @@ export * as shell from 'shelljs';
 export * as onExit from 'signal-exit';
 export * as hash from 'hash-sum';
 export * as path from 'path';
+export * as tryRequire from 'try-require';
 
-export function tryRequire(id: string, req?: Object): any | null;
 export function assert(value: any, message?: string | Error): void;
 
 export * as moduleAlias from './src/moduleAlias';
