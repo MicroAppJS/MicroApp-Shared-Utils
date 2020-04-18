@@ -1,3 +1,5 @@
+
+
 ## [0.1.18](https://github.com/MicroAppJS/shared-utils/compare/v0.1.17...v0.1.18) (2020-04-17)
 
 ## [0.1.17](https://github.com/MicroAppJS/shared-utils/compare/v0.1.16...v0.1.17) (2020-03-31)
