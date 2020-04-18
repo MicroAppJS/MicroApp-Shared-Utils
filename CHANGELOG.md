@@ -1,3 +1,10 @@
+## [0.1.19](https://github.com/MicroAppJS/shared-utils/compare/v0.1.18...v0.1.19) (2020-04-18)
+
+
+### Features
+
+* add `pluginResolution` ([082332b](https://github.com/MicroAppJS/shared-utils/commit/082332b4b4983c67b063899600d74d9e45024cf4))
+
 
 
 ## [0.1.18](https://github.com/MicroAppJS/shared-utils/compare/v0.1.17...v0.1.18) (2020-04-17)
