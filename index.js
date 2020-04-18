@@ -24,6 +24,7 @@ const internal = [
     'openBrowser',
     'Env',
     'validateSchema',
+    'pluginResolution',
 ].reduce((obj, key) => {
     obj[key] = `./src/${key}`;
     return obj;

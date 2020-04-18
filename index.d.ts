@@ -41,3 +41,4 @@ export * as openBrowser from './src/openBrowser';
 export * as Env from './src/Env';
 export * as validateSchema from './src/validateSchema';
 export * as loadFile from './src/loadFile';
+export * as pluginResolution from './src/pluginResolution';
