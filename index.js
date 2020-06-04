@@ -25,11 +25,13 @@ const internal = [
     'Env',
     'validateSchema',
     'pluginResolution',
-    'CONSTANTS',
 ].reduce((obj, key) => {
     obj[key] = `./src/${key}`;
     return obj;
 }, {});
+
+// special
+internal.CONSTANTS = './src/constants';
 
 Object.keys(internal).forEach(key => {
     defineProperty(key, internal);
