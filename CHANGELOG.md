@@ -1,3 +1,10 @@
+## [0.1.21](https://github.com/MicroAppJS/shared-utils/compare/v0.1.20...v0.1.21) (2020-06-04)
+
+
+### Bug Fixes
+
+* fixed bug ([601deed](https://github.com/MicroAppJS/shared-utils/commit/601deedd164eb148671f4957a3070c453b2cb57a))
+
 ## [0.1.20](https://github.com/MicroAppJS/shared-utils/compare/v0.1.19...v0.1.20) (2020-06-04)
 
 
