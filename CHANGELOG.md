@@ -1,3 +1,10 @@
+## [0.1.20](https://github.com/MicroAppJS/shared-utils/compare/v0.1.19...v0.1.20) (2020-06-04)
+
+
+### Features
+
+* add `CONSTANTS` & `isDocker`, art test file ([5d859f8](https://github.com/MicroAppJS/shared-utils/commit/5d859f844e7c7ce1881c0f1526d3f3e189f10eb5))
+
 ## [0.1.19](https://github.com/MicroAppJS/shared-utils/compare/v0.1.18...v0.1.19) (2020-04-18)
 
 
