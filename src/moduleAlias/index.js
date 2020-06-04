@@ -24,4 +24,5 @@ module.exports = {
     add,
     addPaths,
     addPath: addPaths,
+    Module: moduleAlias,
 };

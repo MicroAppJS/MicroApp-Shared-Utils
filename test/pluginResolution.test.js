@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { pluginResolution } = require('../..');
+const { pluginResolution } = require('..');
 
 describe('pluginResolution', () => {
 

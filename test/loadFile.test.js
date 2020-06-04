@@ -2,7 +2,9 @@
 
 /* global expect */
 
-const { loadFile } = require('../..');
+const { loadFile } = require('../');
+
+const ROOT = __dirname;
 
 describe('loadFile', () => {
 
@@ -13,31 +15,25 @@ describe('loadFile', () => {
     });
 
     it('not exist', () => {
-        const file = loadFile(process.cwd(), 'abc.jsx');
+        const file = loadFile(ROOT, './demo/abc.jsx');
 
         expect(file).toBeNull();
     });
 
     it('not file', () => {
-        const file = loadFile(process.cwd(), './');
+        const file = loadFile(ROOT, './demo/aa');
 
         expect(file).toBeNull();
     });
 
     it('success', () => {
-        const file = loadFile(process.cwd(), 'test/a.js');
-
-        expect(file).not.toBeNull();
-    });
-
-    it('json', () => {
-        const file = loadFile(process.cwd(), 'package.json');
+        const file = loadFile(ROOT, './demo/a.js');
 
         expect(file).not.toBeNull();
     });
 
     it('yaml', () => {
-        const file = loadFile(process.cwd(), 'test/a.yaml');
+        const file = loadFile(ROOT, './demo/a.yaml');
 
         expect(file).not.toBeNull();
     });

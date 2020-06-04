@@ -27,6 +27,7 @@ export * as onExit from 'signal-exit';
 export * as hash from 'hash-sum';
 export * as path from 'path';
 export * as tryRequire from 'try-require';
+export * as isDocker from 'is-docker';
 
 export function assert(value: any, message?: string | Error): void;
 
@@ -42,3 +43,4 @@ export * as Env from './src/Env';
 export * as validateSchema from './src/validateSchema';
 export * as loadFile from './src/loadFile';
 export * as pluginResolution from './src/pluginResolution';
+export * as CONSTANTS from './src/constants';

@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('../src/logger');
+const logger = require('../../src/logger');
 
 // npmlog.prefixStyle = {
 

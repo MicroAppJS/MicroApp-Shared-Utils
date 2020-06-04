@@ -122,8 +122,8 @@ const format = {
     // },
     logo(...arrs) {
         const message = utils.format(...(arrs || []));
-        const { NAME } = CONSTANTS;
-        return `${chalk.bgHex('#662F88')(` ${NAME} `)} ${message}`;
+        const namespace = CONSTANTS.get('NAME');
+        return `${chalk.bgHex('#662F88')(` ${namespace} `)} ${message}`;
     },
     json(...arrs) {
         const message = utils.format(...(arrs || []).map(item => formatObject(item)));

@@ -7,6 +7,7 @@ const stream = require('stream');
 const CONSTANTS = require('./constants');
 
 module.exports = async function injectHtml(ctx) {
+    const INJECT_ID = CONSTANTS.get('INJECT_ID');
     // 处理文件注入一些信息
     let ok = false;
     if (ctx && ctx.method === 'GET' && ctx.type === 'text/html') {
@@ -22,7 +23,6 @@ module.exports = async function injectHtml(ctx) {
             ctx.body = body;
             try {
                 const $ = cheerio.load(ctx.body);
-                const { INJECT_ID } = CONSTANTS;
                 if ($(`body>#${INJECT_ID}`).length <= 0) {
                     const INJECT_MICRO_APP = `{
                         cache: {},
@@ -54,7 +54,6 @@ module.exports = async function injectHtml(ctx) {
     function func(key, value) {
         if (ok && key) {
             const $ = cheerio.load(ctx.body);
-            const { INJECT_ID } = CONSTANTS;
             $(`body>#${INJECT_ID}`).append(`<textarea id="${INJECT_ID}_${key}" style="display: none;">${encodeURIComponent(JSON.stringify(value))}</textarea>`);
             ctx.body = $.html();
         }

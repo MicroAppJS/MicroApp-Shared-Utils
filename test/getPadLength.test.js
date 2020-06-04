@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { getPadLength } = require('../../');
+const { getPadLength } = require('../');
 
 describe('getPadLength', () => {
 

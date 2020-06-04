@@ -71,6 +71,7 @@
         "hash-sum": "^2.0.0",
         "import-fresh": "^3.2.1",
         "inquirer": "^7.1.0",
+        "is-docker": "^2.0.0",
         "is-glob": "^4.0.1",
         "lodash": "^4.17.15",
         "lru-cache": "^5.1.1",

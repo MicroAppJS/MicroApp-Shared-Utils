@@ -1,6 +1,6 @@
 'use strict';
 
-const prompt = require('../src/prompt');
+const prompt = require('../../src/prompt');
 
 (async () => {
 

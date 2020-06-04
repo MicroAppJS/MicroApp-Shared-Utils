@@ -25,6 +25,7 @@ const internal = [
     'Env',
     'validateSchema',
     'pluginResolution',
+    'CONSTANTS',
 ].reduce((obj, key) => {
     obj[key] = `./src/${key}`;
     return obj;
@@ -62,6 +63,7 @@ const thirdParty = {
     onExit: 'signal-exit',
     hash: 'hash-sum',
     path: 'path',
+    isDocker: 'is-docker',
 };
 
 Object.keys(thirdParty).forEach(key => {

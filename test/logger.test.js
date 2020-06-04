@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { logger } = require('../..');
+const { logger } = require('../');
 
 describe('Logger', () => {
 
@@ -93,7 +93,7 @@ describe('Logger', () => {
     });
 
     it('logger createInstance', () => {
-        const { createInstance } = require('.');
+        const { createInstance } = require('../src/logger');
         const newLogger = createInstance();
         newLogger.info('createInstance', 'pause...');
         newLogger.pause();
