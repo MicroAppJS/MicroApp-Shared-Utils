@@ -138,6 +138,11 @@ class Logger {
         this.aliasMap = new Map();
     }
 
+    set level(l) {
+        this.npmlog.level = l;
+        return this.npmlog.level;
+    }
+
     checkLevel(l) {
         if (typeof l === 'string') {
             l = CUSTOM_LEVEL[l] && CUSTOM_LEVEL[l].level || 0;
