@@ -1,3 +1,10 @@
+## [0.1.22](https://github.com/MicroAppJS/shared-utils/compare/v0.1.21...v0.1.22) (2021-03-24)
+
+
+### Bug Fixes
+
+* 修复部分逻辑，升级依赖 ([83aed36](https://github.com/MicroAppJS/shared-utils/commit/83aed36bb1809cb8b088a09cececdffafe642fa5))
+
 ## [0.1.21](https://github.com/MicroAppJS/shared-utils/compare/v0.1.20...v0.1.21) (2020-06-04)
 
 
