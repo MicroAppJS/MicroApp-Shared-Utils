@@ -139,29 +139,38 @@ class Logger {
     }
 
     checkLevel(l) {
-        return npmlog.levels[npmlog.level] > l;
+        if (typeof l === 'string') {
+            l = CUSTOM_LEVEL[l] && CUSTOM_LEVEL[l].level || 0;
+        }
+        return this.npmlog.levels[this.npmlog.level] > l;
     }
 
     debug() {
+        if (this.checkLevel('verbose')) return;
         return this.getMethod('verbose')(...arguments);
     }
     warn() {
+        if (this.checkLevel('warn')) return;
         return this.getMethod('warn')(...arguments);
     }
     error() {
+        if (this.checkLevel('error')) return;
         return this.getMethod('error')(...arguments);
     }
     info() {
+        if (this.checkLevel('info')) return;
         return this.getMethod('info')(...arguments);
     }
     success() {
+        if (this.checkLevel('success')) return;
         return this.getMethod('success')(...arguments);
     }
     json() {
-        if (this.checkLevel(3500)) return;
+        if (this.checkLevel('notice')) return;
         return this.getMethod('json')(...arguments);
     }
-    logo() { // 不会禁用
+    logo() { // 基本不会禁用, 10000
+        if (this.checkLevel('noise')) return;
         return this.getMethod('logo')(...arguments);
     }
 
@@ -255,9 +264,9 @@ class Logger {
         return this.aliasMap.get(type);
     }
 
-    newGroup(name, ...args) {
-        const newLog = this.npmlog.newGroup(name, ...args);
-        return factroy(newLog, { alias: this.aliasMap });
+    newGroup() {
+        // 弃用，兼容老版本
+        return this;
     }
 }
 
