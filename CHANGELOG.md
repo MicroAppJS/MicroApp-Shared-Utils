@@ -1,3 +1,5 @@
+## [0.1.24](https://github.com/MicroAppJS/shared-utils/compare/v0.1.23...v0.1.24) (2021-03-24)
+
 ## [0.1.23](https://github.com/MicroAppJS/shared-utils/compare/v0.1.22...v0.1.23) (2021-03-24)
 
 ## [0.1.22](https://github.com/MicroAppJS/shared-utils/compare/v0.1.21...v0.1.22) (2021-03-24)
