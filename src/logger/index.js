@@ -133,9 +133,9 @@ const format = {
 
 class Logger {
 
-    constructor(log, { alias = new Map() }) {
-        this.npmlog = log;
-        this.aliasMap = new Map(alias);
+    constructor() {
+        this.npmlog = npmlog;
+        this.aliasMap = new Map();
     }
 
     checkLevel(l) {
@@ -270,8 +270,8 @@ class Logger {
     }
 }
 
-function factroy(log, opts = {}) {
-    return new Proxy(new Logger(log, opts), {
+function factroy() {
+    return new Proxy(new Logger(), {
         get(target, prop) {
             if (prop in target) {
                 return target[prop];
@@ -283,21 +283,21 @@ function factroy(log, opts = {}) {
             if (alias) {
                 return target.getMethod(alias);
             }
-            const item = log[prop];
+            const item = npmlog[prop];
             if (_.isFunction(item)) {
-                return item.bind(log);
+                return item.bind(npmlog);
             }
             return item;
         },
         set(target, prop, value) {
-            log[prop] = value;
+            target[prop] = value;
             return true;
         },
     });
 }
 
 function createInstance() {
-    return factroy(npmlog);
+    return factroy();
 }
 
 module.exports = createInstance();
