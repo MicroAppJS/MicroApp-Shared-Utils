@@ -66,6 +66,7 @@ const thirdParty = {
     hash: 'hash-sum',
     path: 'path',
     isDocker: 'is-docker',
+    UUID: 'uuid',
 };
 
 Object.keys(thirdParty).forEach(key => {

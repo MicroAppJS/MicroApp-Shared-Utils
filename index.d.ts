@@ -28,6 +28,7 @@ export * as hash from 'hash-sum';
 export * as path from 'path';
 export * as tryRequire from 'try-require';
 export * as isDocker from 'is-docker';
+export * as UUID from 'uuid';
 
 export function assert(value: any, message?: string | Error): void;
 
