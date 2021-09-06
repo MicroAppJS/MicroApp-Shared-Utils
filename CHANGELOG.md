@@ -1,3 +1,10 @@
+## [0.1.25](https://github.com/MicroAppJS/shared-utils/compare/v0.1.24...v0.1.25) (2021-09-06)
+
+
+### Features
+
+* add uuid ([250ecd7](https://github.com/MicroAppJS/shared-utils/commit/250ecd7df85d41180022a1ab3ef3dd975b4405f7))
+
 ## [0.1.24](https://github.com/MicroAppJS/shared-utils/compare/v0.1.23...v0.1.24) (2021-03-24)
 
 ## [0.1.23](https://github.com/MicroAppJS/shared-utils/compare/v0.1.22...v0.1.23) (2021-03-24)
