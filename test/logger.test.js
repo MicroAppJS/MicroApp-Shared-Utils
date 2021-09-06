@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const { logger } = require('../..');
+const { logger } = require('../');
 
 describe('Logger', () => {
 
@@ -41,7 +41,7 @@ describe('Logger', () => {
         const spinner = logger.spinner('abc');
         spinner.start();
         setTimeout(() => {
-            spinner.success('cc');
+            spinner.succeed('cc');
         }, 3000);
 
     });
@@ -90,6 +90,16 @@ describe('Logger', () => {
     it('logger group', () => {
         const newLogger = logger.newGroup('cctv', 'logo');
         newLogger.info('abcdef', 'sdd');
+    });
+
+    it('logger createInstance', () => {
+        const { createInstance } = require('../src/logger');
+        const newLogger = createInstance();
+        newLogger.info('createInstance', 'pause...');
+        newLogger.pause();
+        newLogger.info('createInstance', 'new...');
+        newLogger.resume();
+        newLogger.info('createInstance', 'resume...');
     });
 
 });

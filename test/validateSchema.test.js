@@ -2,7 +2,7 @@
 
 /* global expect */
 
-const validateSchema = require('.');
+const { validateSchema } = require('../');
 
 const schema = {
     additionalProperties: false,

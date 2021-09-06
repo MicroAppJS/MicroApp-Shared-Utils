@@ -3,12 +3,15 @@
 /* global expect */
 
 const fs = require('fs-extra');
-const { virtualFile } = require('../..');
+const path = require('path');
+const { virtualFile } = require('../');
+
+const ROOT = __dirname;
 
 describe('virtualFile', () => {
 
     it('require', () => {
-        const file = require.resolve(__dirname, '../../test/a.js');
+        const file = require.resolve(path.join(ROOT, './demo/a.js'));
         const jsText = fs.readFileSync(file);
         virtualFile.register(file, jsText);
 
@@ -16,7 +19,7 @@ describe('virtualFile', () => {
     });
 
     it('require test', () => {
-        const file = require.resolve(__dirname, '../../test/b.js');
+        const file = require.resolve(path.join(ROOT, './demo/b.js'));
         const jsText = fs.readFileSync(file);
         virtualFile.register(file, jsText);
 
@@ -35,7 +38,7 @@ describe('virtualFile', () => {
     });
 
     it('require function', () => {
-        const file = require.resolve('../logger');
+        const file = require.resolve('../src/logger');
         virtualFile.register(file, content => {
             return content.replace('INFO', 'CCTV');
         });

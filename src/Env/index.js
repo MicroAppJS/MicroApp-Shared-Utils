@@ -1,7 +1,7 @@
 'use strict';
 
 const { execSync } = require('child_process');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const LRU = require('lru-cache');
 const semver = require('semver');

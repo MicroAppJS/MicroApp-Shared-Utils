@@ -5,8 +5,8 @@ const inquirer = require('inquirer');
 const logger = require('../logger');
 const npmlog = logger.npmlog;
 
-const SCOPE_NAME = require('../constants').SCOPE_NAME || '@micro-app';
-const prefix = `[${chalk.green('?')}] ${chalk.bgBlack(chalk.whiteBright(SCOPE_NAME))}`;
+const SCOPE_NAME = 'Q&A?';
+const prefix = chalk.bgMagentaBright(` ${chalk.whiteBright(SCOPE_NAME.substr(0, 2))}`) + chalk.bgCyanBright(`${chalk.whiteBright(SCOPE_NAME.substr(2, 2))} `);
 
 function createDefaultOptions(options = {}) {
     return Object.assign({
@@ -37,7 +37,7 @@ function confirm(message) {
         });
 }
 
-function select(message, { choices, filter, validate } = {}) {
+function select(message, { choices = [], filter, validate, pageSize = choices.length } = {}) {
     if (!choices || choices.length <= 0) {
         logger.throw('prompt', 'select choices is empty!');
     }
@@ -51,7 +51,7 @@ function select(message, { choices, filter, validate } = {}) {
                 name: 'prompt',
                 message,
                 choices,
-                pageSize: choices.length,
+                pageSize,
                 filter,
                 validate,
             }),
@@ -60,6 +60,32 @@ function select(message, { choices, filter, validate } = {}) {
             npmlog.resume();
 
             return answers.prompt;
+        });
+}
+
+function check(message, { choices = [], filter, validate, pageSize = choices.length } = {}) {
+    if (!choices || choices.length <= 0) {
+        logger.throw('prompt', 'select choices is empty!');
+    }
+
+    npmlog.pause();
+
+    return inquirer
+        .prompt([
+            createDefaultOptions({
+                type: 'checkbox',
+                name: 'check',
+                message,
+                choices,
+                pageSize,
+                filter,
+                validate,
+            }),
+        ])
+        .then(answers => {
+            npmlog.resume();
+
+            return answers.check;
         });
 }
 
@@ -86,3 +112,5 @@ function input(message, { filter, validate } = {}) {
 exports.confirm = confirm;
 exports.select = select;
 exports.input = input;
+exports.check = check;
+exports.createDefaultOptions = createDefaultOptions;

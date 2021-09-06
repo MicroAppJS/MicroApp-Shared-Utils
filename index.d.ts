@@ -1,64 +1,47 @@
 /// <reference types="node"/>
 
-import fs from 'fs-extra';
-import chalk from 'chalk';
-import cheerio from 'cheerio';
-import semver from 'semver';
-import semverRegex from 'semver-regex';
-import _ from 'lodash';
-import ora from 'ora';
-import dedent from 'dedent';
-import globby from 'globby';
-import globParent from 'glob-parent';
-import isGlob from 'is-glob';
-import npa from 'npm-package-arg';
-import parseGitUrl from 'git-url-parse';
-import multimatch from 'multimatch';
-import stringifyObject from 'stringify-object';
-import LRU from 'lru-cache';
+export * as  fs from 'fs-extra';
+export * as  chalk from 'chalk';
+export * as  cheerio from 'cheerio';
+export * as  semver from 'semver';
+export * as  semverRegex from 'semver-regex';
+export * as  _ from 'lodash';
+export * as  ora from 'ora';
+export * as  dedent from 'dedent';
+export * as  globby from 'globby';
+export * as  globParent from 'glob-parent';
+export * as  isGlob from 'is-glob';
+export * as  npa from 'npm-package-arg';
+export * as  parseGitUrl from 'git-url-parse';
+export * as  multimatch from 'multimatch';
+export * as  stringifyObject from 'stringify-object';
+export * as  LRU from 'lru-cache';
+export * as  inquirer from 'inquirer';
+export * as  execa from 'execa';
+export * as  yParser from 'yargs-parser';
+export * as  yUnParser from 'yargs-unparser';
+export * as  debug from 'debug';
+export * as  importFresh from 'import-fresh';
+export * as shell from 'shelljs';
+export * as onExit from 'signal-exit';
+export * as hash from 'hash-sum';
+export * as path from 'path';
+export * as tryRequire from 'try-require';
+export * as isDocker from 'is-docker';
+export * as UUID from 'uuid';
 
-export function tryRequire( id: string, req?: Object): any | null;
 export function assert(value: any, message?: string | Error): void;
 
-import * as moduleAlias from './src/moduleAlias';
-import * as getPadLength from './src/getPadLength';
-import * as injectHtml from './src/injectHtml';
-import * as loadFile from './src/loadFile';
-import * as logger from './src/logger';
-import * as smartMerge from './src/smartMerge';
-import * as virtualFile from './src/virtualFile';
-import * as openBrowser from './src/openBrowser';
-import * as env from './src/env';
-import * as validateSchema from './src/validateSchema';
-
-export {
-    moduleAlias,
-    getPadLength,
-    injectHtml,
-    loadFile,
-    smartMerge,
-    virtualFile,
-    logger,
-    openBrowser,
-    env,
-};
-
-export {
-    assert,
-    fs,
-    chalk,
-    cheerio,
-    semver,
-    semverRegex,
-    _,
-    ora,
-    dedent,
-    globby,
-    globParent,
-    isGlob,
-    npa,
-    parseGitUrl,
-    multimatch,
-    stringifyObject,
-    LRU,
-}
+export * as moduleAlias from './src/moduleAlias';
+export * as getPadLength from './src/getPadLength';
+export * as injectHtml from './src/injectHtml';
+export * as logger from './src/logger';
+export * as prompt from './src/prompt';
+export * as smartMerge from './src/smartMerge';
+export * as virtualFile from './src/virtualFile';
+export * as openBrowser from './src/openBrowser';
+export * as Env from './src/Env';
+export * as validateSchema from './src/validateSchema';
+export * as loadFile from './src/loadFile';
+export * as pluginResolution from './src/pluginResolution';
+export * as CONSTANTS from './src/constants';

@@ -75,7 +75,7 @@ function formatObject(message) {
     });
 }
 
-// TODO 优化输出
+// color优化输出
 function dyeMessage(type, message) {
     switch (type.toLowerCase()) {
         case 'warn': {
@@ -100,30 +100,30 @@ function dyeMessage(type, message) {
 }
 
 const format = {
-    debug(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)}`;
-    },
-    warn(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)}`;
-    },
-    error(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)}`;
-    },
-    info(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)}`;
-    },
-    success(...arrs) {
-        const message = utils.format(...(arrs || []));
-        return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)}`;
-    },
+    // debug(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgMagenta(' DEBUG ')} ${dyeMessage('debug', message)}`;
+    // },
+    // warn(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgYellowBright.black(' WARN ')} ${dyeMessage('warn', message)}`;
+    // },
+    // error(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgRed(' ERROR ')} ${dyeMessage('error', message)}`;
+    // },
+    // info(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgBlue(' INFO ')} ${dyeMessage('info', message)}`;
+    // },
+    // success(...arrs) {
+    //     const message = utils.format(...(arrs || []));
+    //     return `${chalk.bgHex('#007007')(' SUCCESS ')} ${dyeMessage('success', message)}`;
+    // },
     logo(...arrs) {
         const message = utils.format(...(arrs || []));
-        const { NAME } = CONSTANTS;
-        return `${chalk.bgHex('#662F88')(` ${NAME} `)} ${message}`;
+        const namespace = CONSTANTS.get('NAME');
+        return `${chalk.bgHex('#662F88')(` ${namespace} `)} ${message}`;
     },
     json(...arrs) {
         const message = utils.format(...(arrs || []).map(item => formatObject(item)));
@@ -133,37 +133,49 @@ const format = {
 
 class Logger {
 
-    constructor(log, { alias = new Map(), customFormat = new Map() }) {
-        this.npmlog = log;
-        this.aliasMap = new Map(alias);
-        // 兼容
-        this.customFormatMap = new Map(customFormat);
+    constructor() {
+        this.npmlog = npmlog;
+        this.aliasMap = new Map();
+    }
+
+    set level(l) {
+        this.npmlog.level = l;
+        return this.npmlog.level;
     }
 
     checkLevel(l) {
-        return npmlog.levels[npmlog.level] > l;
+        if (typeof l === 'string') {
+            l = CUSTOM_LEVEL[l] && CUSTOM_LEVEL[l].level || 0;
+        }
+        return this.npmlog.levels[this.npmlog.level] > l;
     }
 
     debug() {
+        if (this.checkLevel('verbose')) return;
         return this.getMethod('verbose')(...arguments);
     }
     warn() {
+        if (this.checkLevel('warn')) return;
         return this.getMethod('warn')(...arguments);
     }
     error() {
+        if (this.checkLevel('error')) return;
         return this.getMethod('error')(...arguments);
     }
     info() {
+        if (this.checkLevel('info')) return;
         return this.getMethod('info')(...arguments);
     }
     success() {
+        if (this.checkLevel('success')) return;
         return this.getMethod('success')(...arguments);
     }
     json() {
-        if (this.checkLevel(3500)) return;
+        if (this.checkLevel('notice')) return;
         return this.getMethod('json')(...arguments);
     }
-    logo() { // 不会禁用
+    logo() { // 基本不会禁用, 10000
+        if (this.checkLevel('noise')) return;
         return this.getMethod('logo')(...arguments);
     }
 
@@ -175,9 +187,9 @@ class Logger {
      */
     spinner(message) {
         const defulatOpts = {
-            text: message,
+            text: typeof message === 'string' ? `${message}\n` : '',
             color: 'yellow',
-            prefixText: `${chalk.bgHex('#EE6B2C')(' PENDING ')} `,
+            prefixText: chalk.bgHex('#EC6D29')(chalk.white(' WAIT ')),
         };
         return ora(typeof message === 'string' ? defulatOpts : Object.assign({}, defulatOpts, message));
     }
@@ -215,7 +227,7 @@ class Logger {
         if ([ 'logo', 'json' ].includes(type)) {
             const logger = this.getStdoutMethod(type);
             return (...args) => {
-                return logger(this.format[type](...args));
+                return logger(format[type](...args));
             };
         }
         const logger = this.getNpmlogMethod(type);
@@ -257,26 +269,14 @@ class Logger {
         return this.aliasMap.get(type);
     }
 
-    addCustomToString(key, value) {
-        this.customFormatMap.set(key, value);
-    }
-
-    newGroup(name, ...args) {
-        const newLog = this.npmlog.newGroup(name, ...args);
-        return factroy(newLog, { alias: this.aliasMap, customFormat: this.customFormatMap });
-    }
-
-    get format() { // 兼容 toString
-        return new Proxy(this, {
-            get(target, prop) {
-                return target.customFormatMap.get(prop);
-            },
-        });
+    newGroup() {
+        // 弃用，兼容老版本
+        return this;
     }
 }
 
-function factroy(log, opts = {}) {
-    return new Proxy(new Logger(log, opts), {
+function factroy() {
+    return new Proxy(new Logger(), {
         get(target, prop) {
             if (prop in target) {
                 return target[prop];
@@ -288,16 +288,26 @@ function factroy(log, opts = {}) {
             if (alias) {
                 return target.getMethod(alias);
             }
-            return log[prop];
+            const item = npmlog[prop];
+            if (_.isFunction(item)) {
+                return item.bind(npmlog);
+            }
+            return item;
         },
         set(target, prop, value) {
-            log[prop] = value;
+            target[prop] = value;
             return true;
         },
     });
 }
 
-module.exports = factroy(npmlog, { customFormat: Object.entries(format) });
+function createInstance() {
+    return factroy();
+}
+
+module.exports = createInstance();
+
+module.exports.createInstance = createInstance;
 
 module.exports.getStdoutMethod = getStdoutMethod;
 

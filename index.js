@@ -18,15 +18,20 @@ const internal = [
     'injectHtml',
     'loadFile',
     'logger',
+    'prompt',
     'smartMerge',
     'virtualFile',
     'openBrowser',
     'Env',
     'validateSchema',
+    'pluginResolution',
 ].reduce((obj, key) => {
     obj[key] = `./src/${key}`;
     return obj;
 }, {});
+
+// special
+internal.CONSTANTS = './src/constants';
 
 Object.keys(internal).forEach(key => {
     defineProperty(key, internal);
@@ -50,6 +55,18 @@ const thirdParty = {
     multimatch: 'multimatch',
     stringifyObject: 'stringify-object',
     LRU: 'lru-cache',
+    inquirer: 'inquirer',
+    execa: 'execa',
+    yParser: 'yargs-parser',
+    yUnParser: 'yargs-unparser',
+    debug: 'debug',
+    importFresh: 'import-fresh',
+    shell: 'shelljs',
+    onExit: 'signal-exit',
+    hash: 'hash-sum',
+    path: 'path',
+    isDocker: 'is-docker',
+    UUID: 'uuid',
 };
 
 Object.keys(thirdParty).forEach(key => {
