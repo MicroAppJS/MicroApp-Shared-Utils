@@ -1,6 +1,6 @@
 {
     "name": "@micro-app/shared-utils",
-    "version": "0.1.25",
+    "version": "0.1.26",
     "description": "[Shared] shared utilities for micro-app.",
     "main": "index.js",
     "scripts": {
