@@ -1,8 +1,6 @@
 'use strict';
 
-const output = {};
-
-function defineProperty(key, from, to = output) {
+function defineProperty(key, from, to = exports) {
     if (to[key]) throw new Error(`"${key}" already exsits!`);
     // lazy
     Object.defineProperty(to, key, {
@@ -78,15 +76,13 @@ Object.keys(thirdParty).forEach(key => {
 
 const alias = {
     assert: () => {
-        return output.logger.assert.bind(output.logger);
+        return exports.logger.assert.bind(exports.logger);
     },
 };
 
 Object.keys(alias).forEach(key => {
-    if (output[key]) throw new Error(`"${key}" already exsits!`);
-    Object.defineProperty(output, key, {
+    if (exports[key]) throw new Error(`"${key}" already exsits!`);
+    Object.defineProperty(exports, key, {
         get: alias[key],
     });
 });
-
-module.exports = output;
